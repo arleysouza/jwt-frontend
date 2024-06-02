@@ -2,16 +2,16 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import {
   CategoryProps,
   CategoryContextProps,
-  ProviderProps,
+  ProviderProps
 } from "../types";
 import { Category } from "../services";
-import { useError  } from "../hooks";
+import { useError } from "../hooks";
 
 export const CategoryContext = createContext({} as CategoryContextProps);
 
 export function CategoryProvider({ children }: ProviderProps) {
   const [categories, setCategories] = useState([] as CategoryProps[]);
-  const { setError, isErrorProps } = useError();
+  const {isErrorProps, setError} = useError();
 
   /*
   useCallback ajuda a garantir que a função não seja recriada em cada 
@@ -19,17 +19,15 @@ export function CategoryProvider({ children }: ProviderProps) {
   */
   const getCategories = useCallback(async () => {
     const response = await Category.list();
-    if (isErrorProps(response)) {
-      setError(response);
-    } else {
-      setError(null);
+    if (!isErrorProps(response)) {
       setCategories(response);
     }
-  }, [setError, isErrorProps]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     getCategories();
-  }, [getCategories]); // Dependência vazia para garantir que seja executado apenas na montagem
+  }, [getCategories]);
 
   const create = async (name: string) => {
     const response = await Category.create(name);
@@ -41,8 +39,38 @@ export function CategoryProvider({ children }: ProviderProps) {
     }
   };
 
+  const remove = async (id: string) => {
+    const response = await Category.delete(id);
+    if (isErrorProps(response)) {
+      setError(response);
+    } else {
+      setError(null);
+      await getCategories();
+    }
+  }
+
+  const update = async (id:string, name: string) => {
+    const response = await Category.update(id,name);
+    if (isErrorProps(response)) {
+      setError(response);
+    } else {
+      setError(null);
+      await getCategories(); //recarrega as categorias
+    }
+  };
+  
+  // percorre o array e retorna o objeto que possui o ID
+  const getCategoryById = (id:string) => {
+    for(let i = 0; i < categories.length; i++ ){
+      if( categories[i].id === id){
+        return categories[i];
+      }
+    }
+    return null;
+  }
+
   return (
-    <CategoryContext.Provider value={{ categories, getCategories, create }}>
+    <CategoryContext.Provider value={{ categories, create, remove, update, getCategoryById}}>
       {children}
     </CategoryContext.Provider>
   );

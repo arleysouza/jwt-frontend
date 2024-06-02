@@ -1,14 +1,26 @@
 import styled from "styled-components";
 
+interface Props {
+  id: string;
+  label: string;
+  value: any;
+  setValue: (value: any) => void;
+  options: any[];
+}
+
 export default function Select({ id, label, value, setValue, options }: Props) {
   return (
     <Wrapper>
       <LabelSld htmlFor={id}>{label}</LabelSld>
       <SelectSld
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={options.find(option => option.id === value.id)?.id || ""}
+        onChange={(e) => {
+          const selectedOption = options.find(option => option.id === e.target.value);
+          setValue(selectedOption);
+        }}
         id={id}
       >
+        <option value="" disabled>Selecione uma opção</option>
         {options.map((option) => (
           <option value={option.id} key={option.id}>
             {option.name}
@@ -42,11 +54,3 @@ const SelectSld = styled.select`
   font-size: 110%;
   font-family: roboto;
 `;
-
-interface Props {
-  id: string;
-  label: string;
-  value: string;
-  setValue: (value: string) => void;
-  options: any[];
-}

@@ -7,9 +7,7 @@ export function ErrorProvider({ children }: ProviderProps) {
   const [error, setError] = useState<ErrorProps | null>(null);
 
   // verifica se o objeto é do tipo ErrorProps
-  function isErrorProps(object: any): object is ErrorProps{
-    return "message" in object;
-  }
+  const isErrorProps = (object: any): object is ErrorProps => "message" in object;
 
   return (
     <ErrorContext.Provider value={{ error, setError, isErrorProps }}>

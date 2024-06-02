@@ -8,7 +8,7 @@ export default function UserCreate() {
   const [mail, setMail] = useState("pedro@teste.com");
   const [password, setPassword] = useState("123456");
   const { create } = useUser();
-  const { setError } = useError();
+  const {setError} = useError();
 
   const handleCreate = () => {
     if (!mail) {

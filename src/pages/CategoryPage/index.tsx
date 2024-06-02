@@ -1,14 +1,21 @@
 import styled from "styled-components";
 import { Button, Input, Select, Title } from "../../components";
 import { useCategory, useError } from "../../hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CategoryProps } from "../../types";
 
 export default function CategoryPage() {
   const { categories } = useCategory();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<CategoryProps | null>(null);
   const [name, setName] = useState("");
+  const { create, remove, update } = useCategory();
   const { setError } = useError();
-  const { create } = useCategory();
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCategory(categories[0]);
+    }
+  }, [categories]);
 
   const handleCreate = () => {
     if (!name) {
@@ -18,16 +25,36 @@ export default function CategoryPage() {
     }
   };
 
+  const handleRemove = () => {
+    if (!category) {
+      setError({ message: "Selecione a categoria a ser excluída" });
+    } else {
+      remove(category.id);
+    }
+  };
+
+  const handleUpdate = () => {
+    if (!category) {
+      setError({ message: "Selecione a categoria a ser atualizada" });
+    } else if (!name) {
+      setError({ message: "Forneça o novo nome da categoria" });
+    } else {
+      update(category.id, name);
+    }
+  };
+
   return (
     <Wrapper>
       <Title>Cadastro de categorias</Title>
-      <Select
-        id="category"
-        label="Categorias"
-        options={categories}
-        value={category}
-        setValue={setCategory}
-      />
+      {categories && category && (
+        <Select
+          id="category"
+          label="Categorias"
+          options={categories}
+          value={category}
+          setValue={setCategory}
+        />
+      )}
       <Input
         type="text"
         id="name"
@@ -36,7 +63,9 @@ export default function CategoryPage() {
         setValue={setName}
       />
       <LineSld>
-        <Button label="Salvar" click={handleCreate} />
+        <Button label="Criar" click={handleCreate} />
+        <Button label="Atualizar categoria selecionado" click={handleUpdate} />
+        <Button label="Excluir categoria selecionado" click={handleRemove} />
       </LineSld>
     </Wrapper>
   );

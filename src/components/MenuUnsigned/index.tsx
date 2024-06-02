@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function UnsignedMenu() {
+export default function MenuUnsigned() {
   return (
     <Wrapper>
       <LinkSld to="/cadastrar">Cadastrar</LinkSld>

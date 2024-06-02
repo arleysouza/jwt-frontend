@@ -7,6 +7,7 @@ export default function Button({ label, click }: Props) {
 export const ButtonSld = styled.button`
   display: flex;
   padding: 10px 20px;
+  margin-right: 10px;
   background-color: rgb(23, 68, 119);
   color: #fff;
   border: none;

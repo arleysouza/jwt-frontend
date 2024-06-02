@@ -1,15 +1,17 @@
-import { LoginProps, ErrorProps, UserProps } from "../types";
+import { ErrorProps, ProductProps } from "../types";
 import api from "./api";
 
-class User {
-  async login(mail:string,password:string): Promise<LoginProps | ErrorProps> {
+class Product {
+  async list(): Promise<ProductProps[] | ErrorProps> {
     try {
-      const { data } = await api.post("/login", {mail,password});
+      const { data } = await api.get("/produto");
       return data;
     } catch (error: any) {
       if (error.response) {
         // O servidor respondeu com um status diferente de 2xx
-        return { message: `Falha: ${error.response.status} - ${error.response.statusText}` };
+        return {
+          message: `Falha: ${error.response.status} - ${error.response.statusText}`,
+        };
       } else if (error.request) {
         // A requisição foi feita, mas nenhuma resposta foi recebida
         return { message: "O servidor não está acessível" };
@@ -19,14 +21,16 @@ class User {
     }
   }
 
-  async create(mail:string,password:string): Promise<LoginProps | ErrorProps> {
+  async create(category:string, name: string): Promise<ProductProps[] | ErrorProps> {
     try {
-      const { data } = await api.post("/usuario", {mail,password});
+      const { data } = await api.post("/produto", { category, name });
       return data;
     } catch (error: any) {
       if (error.response) {
         // O servidor respondeu com um status diferente de 2xx
-        return { message: `Falha: ${error.response.status} - ${error.response.statusText}` };
+        return {
+          message: `Falha: ${error.response.status} - ${error.response.statusText}`,
+        };
       } else if (error.request) {
         // A requisição foi feita, mas nenhuma resposta foi recebida
         return { message: "O servidor não está acessível" };
@@ -36,14 +40,18 @@ class User {
     }
   }
 
-  async list(): Promise<UserProps[] | ErrorProps> {
+
+  async delete(id: string): Promise<ProductProps | ErrorProps> {
     try {
-      const { data } = await api.get("/usuario");
+      // No Axios o método HTTP DELETE não aceita passar parâmetros pelo body
+      const { data } = await api.delete(`/produto/${id}`);
       return data;
     } catch (error: any) {
       if (error.response) {
         // O servidor respondeu com um status diferente de 2xx
-        return { message: `Falha: ${error.response.status} - ${error.response.statusText}` };
+        return {
+          message: `Falha: ${error.response.status} - ${error.response.statusText}`,
+        };
       } else if (error.request) {
         // A requisição foi feita, mas nenhuma resposta foi recebida
         return { message: "O servidor não está acessível" };
@@ -53,14 +61,16 @@ class User {
     }
   }
 
-  async updateProfile(id:string,profile:string): Promise<LoginProps | ErrorProps> {
+  async update(id: string, category:string, name: string): Promise<ProductProps | ErrorProps> {
     try {
-      const { data } = await api.put("/usuario/perfil", { id, profile });
+      const { data } = await api.put("/produto", { id, category, name });
       return data;
     } catch (error: any) {
       if (error.response) {
         // O servidor respondeu com um status diferente de 2xx
-        return { message: `Falha: ${error.response.status} - ${error.response.statusText}` };
+        return {
+          message: `Falha: ${error.response.status} - ${error.response.statusText}`,
+        };
       } else if (error.request) {
         // A requisição foi feita, mas nenhuma resposta foi recebida
         return { message: "O servidor não está acessível" };
@@ -71,5 +81,5 @@ class User {
   }
 }
 
-const user = new User();
-export default user;
+const product = new Product();
+export default product;
