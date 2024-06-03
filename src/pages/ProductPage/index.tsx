@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Button, Input, Select, Title } from "../../components";
-import { useCategory, useError, useProduct } from "../../hooks";
+import { Button, ErrorBar, Input, Select, Title } from "../../components";
+import { useCategory, useProduct } from "../../hooks";
 import { useEffect, useState } from "react";
 import { CategoryProps, ProductProps } from "../../types";
 
@@ -9,14 +9,14 @@ export default function ProductPage() {
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [name, setName] = useState("");
   const { categories, getCategoryById } = useCategory();
-  const { products, create, update, remove } = useProduct();
-  const { setError } = useError();
+  const { error, products, create, update, remove, setError } = useProduct();
 
   useEffect(() => {
+    setError(null);
     if (products.length > 0) {
       setProduct(products[0]);
     }
-  }, [products]);
+  }, [products,setError]);
 
   useEffect(() => {
     if (product) {
@@ -58,6 +58,7 @@ export default function ProductPage() {
 
   return (
     <Wrapper>
+      {error ? <ErrorBar>{error.message}</ErrorBar> : <></>}
       <Title>Cadastro de produtos</Title>
       {products && product && (
         <Select

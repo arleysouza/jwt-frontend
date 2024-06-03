@@ -24,12 +24,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Tratar erros de autenticação, como redirecionar para a página de login
-      console.error("Unauthorized access - redirecting to login");
-      // Redirecione para a página de login ou faça outra ação apropriada
+    if (error.response) {
+      return Promise.reject({ message: error.response });
+    } else if (error.request) {
+      // O servidor não está respondendo
+      return Promise.reject({ message: "Servidor inoperante" });
+    } else {
+      // Algo aconteceu ao configurar a requisição
+      return Promise.reject({ message: error.message });
     }
-    return Promise.reject(error);
   }
 );
 

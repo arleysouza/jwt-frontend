@@ -1,16 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import { CategoryPage, ProductPage, UserPage } from "../pages";
-import { ErrorBar, Logout, MenuAdm } from "../components";
-import { useError } from "../hooks";
+import { Logout, MenuAdm } from "../components";
 import { CategoryProvider, ProductProvider, UserProvider } from "../contexts";
 
 export default function AdmRoutes() {
-  const { error } = useError();
-
   return (
     <>
       <MenuAdm />
-      {error ? <ErrorBar>{error.message}</ErrorBar> : <></>}
       <Routes>
         <Route
           path="/"

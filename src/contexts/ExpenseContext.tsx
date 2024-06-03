@@ -2,16 +2,18 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import {
   ProviderProps,
   SpentContextProps,
-  ExpenseProps
+  ExpenseProps,
+  ErrorProps
 } from "../types";
 import { Expense } from "../services";
-import { useError } from "../hooks";
 
 export const ExpenseContext = createContext({} as SpentContextProps);
 
 export function ExpenseProvider({ children }: ProviderProps) {
   const [expenses, setExpenses] = useState([] as ExpenseProps[]);
-  const {isErrorProps} = useError();
+  const [error, setError] = useState<ErrorProps | null>(null);
+  // verifica se o objeto é do tipo ErrorProps
+  const isErrorProps = (object: any): object is ErrorProps => "message" in object;
 
   /*
   useCallback ajuda a garantir que a função não seja recriada em cada 
@@ -19,8 +21,12 @@ export function ExpenseProvider({ children }: ProviderProps) {
   */
   const getSpents = useCallback(async () => {
     const response = await Expense.list();
+    console.log("resp", response)
     if (!isErrorProps(response)) {
       setExpenses(response);
+    }
+    else{
+      setError(response);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -31,7 +37,7 @@ export function ExpenseProvider({ children }: ProviderProps) {
 
 
   return (
-    <ExpenseContext.Provider value={{ expenses }}>
+    <ExpenseContext.Provider value={{ expenses, error, setError, isErrorProps }}>
       {children}
     </ExpenseContext.Provider>
   );

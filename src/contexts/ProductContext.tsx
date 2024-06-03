@@ -1,13 +1,16 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { ProductContextProps, ProductProps, ProviderProps } from "../types";
+import { ErrorProps, ProductContextProps, ProductProps, ProviderProps } from "../types";
 import { Product } from "../services";
-import { useError } from "../hooks";
 
 export const ProductContext = createContext({} as ProductContextProps);
 
 export function ProductProvider({ children }: ProviderProps) {
+  const [error, setError] = useState<ErrorProps | null>(null);
   const [products, setProducts] = useState([] as ProductProps[]);
-  const { isErrorProps, setError } = useError();
+  
+  // verifica se o objeto é do tipo ErrorProps
+  const isErrorProps = (object: any): object is ErrorProps => "message" in object;
+
   /*
   useCallback ajuda a garantir que a função não seja recriada em cada 
   renderização, evitando assim loops infinitos
@@ -16,6 +19,9 @@ export function ProductProvider({ children }: ProviderProps) {
     const response = await Product.list();
     if (!isErrorProps(response)) {
       setProducts(response);
+    }
+    else{
+      setError(response);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -56,7 +62,7 @@ export function ProductProvider({ children }: ProviderProps) {
 
   return (
     <ProductContext.Provider
-      value={{ products, create, update, remove }}
+      value={{ products, create, update, remove, error, setError, isErrorProps }}
     >
       {children}
     </ProductContext.Provider>

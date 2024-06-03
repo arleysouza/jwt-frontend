@@ -16,6 +16,9 @@ export interface UserContextProps {
   create: (mail: string, password: string) => void;
   getUsers: () => void;
   updateProfile: (id: string, profile: string) => void;
+  error: ErrorProps | null;
+  setError: (error: ErrorProps | null) => void;
+  isErrorProps: (object: any) => object is ErrorProps;
 }
 
 export interface CategoryContextProps {
@@ -24,6 +27,9 @@ export interface CategoryContextProps {
   remove: (id: string) => void;
   update: (id: string, name: string) => void;
   getCategoryById: (id:string) => CategoryProps | null;
+  error: ErrorProps | null;
+  setError: (error: ErrorProps | null) => void;
+  isErrorProps: (object: any) => object is ErrorProps;
 }
 
 export interface ProductContextProps {
@@ -31,10 +37,16 @@ export interface ProductContextProps {
   create: (category:string, name: string) => void;
   update: (id:string, category:string, name: string) => void;
   remove: (id: string) => void;
+  error: ErrorProps | null;
+  setError: (error: ErrorProps | null) => void;
+  isErrorProps: (object: any) => object is ErrorProps;
 }
 
 export interface SpentContextProps {
   expenses: ExpenseProps[];
+  error: ErrorProps | null;
+  setError: (error: ErrorProps | null) => void;
+  isErrorProps: (object: any) => object is ErrorProps;
 }
 
 export interface ErrorProps {

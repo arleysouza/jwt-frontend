@@ -1,17 +1,15 @@
 import styled from "styled-components";
-import { TableExpense, Title } from "../../components";
+import { ErrorBar, TableExpense, Title } from "../../components";
 import { useExpense } from "../../hooks";
 
 export default function ExpensePage() {
-  const { expenses } = useExpense();
+  const { error, expenses } = useExpense();
 
   return (
     <Wrapper>
+      {error ? <ErrorBar>{error.message}</ErrorBar> : <></>}
       <Title>Seus gastos</Title>
-      {
-        (expenses && expenses.length > 0) && <TableExpense expenses={expenses} />
-      }
-
+      {expenses && expenses.length > 0 && <TableExpense expenses={expenses} />}
     </Wrapper>
   );
 }

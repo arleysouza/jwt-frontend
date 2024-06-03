@@ -6,22 +6,20 @@ import {
   UserProps,
 } from "../types";
 import { User } from "../services";
-import { useError } from "../hooks";
 import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext({} as UserContextProps);
 
 export function UserProvider({ children }: ProviderProps) {
+  const [error, setError] = useState<ErrorProps | null>(null);
   const [users, setUsers] = useState<UserProps[] | null>(null);
   const [mail, setMail] = useState<string | null>(null);
   const [profile, setProfile] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const { setError } = useError();
   const navigate = useNavigate();
 
   // verifica se o objeto é do tipo ErrorProps
-  const isErrorProps = (object: any): object is ErrorProps =>
-    "message" in object;
+  const isErrorProps = (object: any): object is ErrorProps => "message" in object;
 
   // Carrega as propriedades se elas estiverem salvas no localStorage
   useEffect(() => {
@@ -84,6 +82,9 @@ export function UserProvider({ children }: ProviderProps) {
     if (!isErrorProps(response)) {
       setUsers(response);
     }
+    else{
+      setError(response);
+    }
   };
 
   const updateProfile = async (id: string, profile: string) => {
@@ -97,7 +98,7 @@ export function UserProvider({ children }: ProviderProps) {
 
   return (
     <UserContext.Provider
-      value={{ users, mail, profile, token, login, logout, create, getUsers, updateProfile }}
+      value={{ users, mail, profile, token, login, logout, create, getUsers, updateProfile, error, setError, isErrorProps }}
     >
       {children}
     </UserContext.Provider>

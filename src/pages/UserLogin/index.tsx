@@ -2,13 +2,11 @@ import { useState } from "react";
 import useUser from "../../hooks/useUser";
 import styled from "styled-components";
 import { Title, Input, Button } from "../../components";
-import { useError } from "../../hooks";
 
 export default function UserLogin(){
     const [mail,setMail] = useState("pedro@teste.com");
     const [password,setPassword] = useState("123456");
-    const { login } = useUser();
-    const { setError } = useError();
+    const { login, setError } = useUser();
 
     const handleLogin = () => {
         if( !mail ){

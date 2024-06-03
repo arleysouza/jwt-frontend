@@ -1,21 +1,22 @@
 import styled from "styled-components";
-import { Button, Input, Select, Title } from "../../components";
-import { useCategory, useError } from "../../hooks";
+import { Button, ErrorBar, Input, Select, Title } from "../../components";
+import { useCategory } from "../../hooks";
 import { useEffect, useState } from "react";
 import { CategoryProps } from "../../types";
 
 export default function CategoryPage() {
-  const { categories } = useCategory();
+  const { error, categories } = useCategory();
   const [category, setCategory] = useState<CategoryProps | null>(null);
   const [name, setName] = useState("");
-  const { create, remove, update } = useCategory();
-  const { setError } = useError();
+  const { create, remove, update, setError } = useCategory();
 
   useEffect(() => {
+    setError(null);
     if (categories.length > 0) {
       setCategory(categories[0]);
     }
-  }, [categories]);
+    
+  }, [categories,setError]);
 
   const handleCreate = () => {
     if (!name) {
@@ -45,6 +46,7 @@ export default function CategoryPage() {
 
   return (
     <Wrapper>
+      {error ? <ErrorBar>{error.message}</ErrorBar> : <></>}
       <Title>Cadastro de categorias</Title>
       {categories && category && (
         <Select

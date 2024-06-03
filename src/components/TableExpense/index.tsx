@@ -20,7 +20,7 @@ export default function ExpensesTable({ expenses }: Props) {
         <tr>
           <Th>Produto</Th>
           <Th>Valor</Th>
-          <Th>Data e Hora</Th>
+          <Th>Data e horário</Th>
         </tr>
       </thead>
       <tbody>

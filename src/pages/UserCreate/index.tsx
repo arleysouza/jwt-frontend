@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { useError, useUser } from "../../hooks";
+import { useUser } from "../../hooks";
 import styled from "styled-components";
 import { Title, Input, Button } from "../../components";
-
 
 export default function UserCreate() {
   const [mail, setMail] = useState("pedro@teste.com");
   const [password, setPassword] = useState("123456");
-  const { create } = useUser();
-  const {setError} = useError();
+  const { create, setError } = useUser();
 
   const handleCreate = () => {
     if (!mail) {

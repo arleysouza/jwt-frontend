@@ -2,16 +2,18 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import {
   CategoryProps,
   CategoryContextProps,
-  ProviderProps
+  ProviderProps,
+  ErrorProps
 } from "../types";
 import { Category } from "../services";
-import { useError } from "../hooks";
 
 export const CategoryContext = createContext({} as CategoryContextProps);
 
 export function CategoryProvider({ children }: ProviderProps) {
   const [categories, setCategories] = useState([] as CategoryProps[]);
-  const {isErrorProps, setError} = useError();
+  const [error, setError] = useState<ErrorProps | null>(null);
+  // verifica se o objeto é do tipo ErrorProps
+  const isErrorProps = (object: any): object is ErrorProps => "message" in object;
 
   /*
   useCallback ajuda a garantir que a função não seja recriada em cada 
@@ -21,6 +23,9 @@ export function CategoryProvider({ children }: ProviderProps) {
     const response = await Category.list();
     if (!isErrorProps(response)) {
       setCategories(response);
+    }
+    else{
+      setError(response);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,7 +75,7 @@ export function CategoryProvider({ children }: ProviderProps) {
   }
 
   return (
-    <CategoryContext.Provider value={{ categories, create, remove, update, getCategoryById}}>
+    <CategoryContext.Provider value={{ categories, create, remove, update, getCategoryById, error, setError, isErrorProps }}>
       {children}
     </CategoryContext.Provider>
   );
