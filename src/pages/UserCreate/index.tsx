@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useUser } from "../../hooks";
 import styled from "styled-components";
-import { Title, Input, Button } from "../../components";
+import { Title, Input, Button, ErrorBar } from "../../components";
 
 export default function UserCreate() {
   const [mail, setMail] = useState("pedro@teste.com");
   const [password, setPassword] = useState("123456");
-  const { create, setError } = useUser();
+  const { error, create, setError } = useUser();
 
   const handleCreate = () => {
     if (!mail) {
@@ -20,6 +20,7 @@ export default function UserCreate() {
 
   return (
     <Wrapper>
+      {error ? <ErrorBar>{error.message}</ErrorBar> : <></>}
       <Title>Novo usuário</Title>
       <Input
         type="text"

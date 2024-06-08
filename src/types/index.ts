@@ -1,11 +1,5 @@
 import { ReactNode } from "react";
 
-export interface ErrorContextProps {
-  error: ErrorProps | null;
-  setError: (error: ErrorProps | null) => void;
-  isErrorProps: (object: any) => object is ErrorProps;
-}
-
 export interface UserContextProps {
   users: UserProps[] | null;
   mail: string | null;

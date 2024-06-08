@@ -38,7 +38,7 @@ class User {
   async updateProfile(
     id: string,
     profile: string
-  ): Promise<LoginProps | ErrorProps> {
+  ): Promise<UserProps | ErrorProps> {
     try {
       const { data } = await api.put("/usuario/perfil", { id, profile });
       return data;
