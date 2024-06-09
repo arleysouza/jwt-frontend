@@ -1,6 +1,6 @@
 ## Atividade - Front end conectando a back end usando JWT (JSON Web Token)
 
-O aplicativo faz a conexão com o back end disponível em https://github.com/arleysouza/jwt-postgresql. O usuário precisa fazer o login para obter o token que será transmitido no hearder das demais requisições. 
+O aplicativo faz a conexão com o back end disponível em https://github.com/arleysouza/jwt-postgresql. O usuário precisa fazer o login para obter o token que será transmitido no header das demais requisições. 
 
 ### Instruções de uso
 Use o comando a seguir para clonar o projeto e instalar as dependências.
@@ -13,4 +13,5 @@ Você precisa colocar a URL do back end na variável de ambiente `REACT_APP_URL_
 
 ### Estrutura do projeto
 
-- #services#: mantém todas as requisições com o servidor. No arquivo `api.ts`
+- **services**: código que faz as requisições ao servidor. No arquivo `api.ts` os interceptos são chamados antes e após cada requisição. Antes ele é usado para setar o token no header da requisição e após ele é usado para verificar mensagens de erro, assim como servidor ou rede inoperante;
+
