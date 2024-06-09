@@ -21,7 +21,7 @@ export function ExpenseProvider({ children }: ProviderProps) {
   */
   const getSpents = useCallback(async () => {
     const response = await Expense.list();
-    console.log("resp", response)
+
     if (!isErrorProps(response)) {
       setExpenses(response);
     }

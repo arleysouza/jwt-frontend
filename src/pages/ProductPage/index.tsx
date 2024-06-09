@@ -10,7 +10,7 @@ export default function ProductPage() {
   const [name, setName] = useState("");
   const { categories, getCategoryById } = useCategory();
   const { error, products, create, update, remove, setError } = useProduct();
-  console.log("category", category)
+  
   useEffect(() => {
     setError(null);
     if (products.length > 0) {
