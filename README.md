@@ -18,7 +18,7 @@ Você precisa colocar a URL do back end na variável de ambiente `REACT_APP_URL_
 - **hooks**: usados para simplificar o acesso aos contextos;
 - **pages**: páginas de acesso, utiliza os componentes definidos na pasta `components`;
 - **components**: componentes consumidos pelas páginas, definidas na pasta `pages`;
-- **routes**: o front end consome as operações definidas no servidor. Desta forma, temos rotas que estão definidas para 3 situações (não logado, logado como __adm__ e logado como __user__). 
+- **routes**: o front end consome as operações definidas no servidor. Desta forma, temos rotas que estão definidas para três situações: não logado, logado como _adm_ e logado como _user_). 
 ```
 export default function Routes(){
     const {token,profile} = useUser();
