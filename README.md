@@ -18,7 +18,7 @@ Você precisa colocar a URL do back end na variável de ambiente `REACT_APP_URL_
 - **hooks**: usados para simplificar o acesso aos contextos;
 - **pages**: páginas de acesso, utiliza os componentes definidos na pasta `components`;
 - **components**: componentes consumidos pelas páginas, definidas na pasta `pages`;
-- **routes**: o front end consome as operações definidas no servidor. Desta forma, temos rotas que estão definidas para três situações: não logado, logado como _adm_ e logado como _user_). 
+- **routes**: as páginas do front end se tornam disponíveis a partir dos valores das propriedades `token` e `profile`, propagadas pela estrutura de componentes através do `UserContext`:
 ```
 export default function Routes(){
     const {token,profile} = useUser();
@@ -26,5 +26,29 @@ export default function Routes(){
     return !token? <UnsignedRoutes /> : profile === "adm" ? <AdmRoutes /> : <UserRoutes />;
 }
 ```
-
+A propagação dos contextos pelas páginas ocorre primeiramente no componente raiz. Como o `UserContext` envolve toda a árvore de componentes, então qualquer componente pode consumir as propriedades `token` e `profile` definidas nesse contexto.
+```
+export default function App() {
+  return (
+    <BrowserRouter>
+      <UserProvider>
+        <Routes />
+      </UserProvider>
+    </BrowserRouter>
+  );
+}
+``` 
+A propapação dos demais contextos ocorre na especificação da rota. No exemplo a seguir a rota `/produto` faz os contextos `CategoryContext` e `ProductContext` serem invocados antes da construção do componente `ProductPage`.
+```
+<Route
+    path="/produto"
+    element={
+        <CategoryProvider>
+            <ProductProvider>
+                <ProductPage />
+            </ProductProvider>
+        </CategoryProvider>
+    }
+/>
+```
 
