@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { SpentPage } from "../pages";
+import { ExpensePage } from "../pages";
 import { Logout, MenuUser } from "../components";
 import { ExpenseProvider } from "../contexts";
 
@@ -12,7 +12,7 @@ export default function UserRoutes() {
           path="/"
           element={
             <ExpenseProvider>
-              <SpentPage />
+              <ExpensePage />
             </ExpenseProvider>
           }
         />
@@ -20,7 +20,7 @@ export default function UserRoutes() {
           path="/gasto"
           element={
             <ExpenseProvider>
-              <SpentPage />
+              <ExpensePage />
             </ExpenseProvider>
           }
         />

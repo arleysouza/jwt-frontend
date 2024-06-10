@@ -8,7 +8,7 @@ import UserPage from "./UserPage";
 export {
     CategoryPage,
     ProductPage,
-    ExpensePage as SpentPage,
+    ExpensePage,
     UserCreate,
     UserLogin,
     UserPage,
