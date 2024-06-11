@@ -23,6 +23,7 @@ export function UserProvider({ children }: ProviderProps) {
 
   // Carrega as propriedades se elas estiverem salvas no localStorage
   useEffect(() => {
+    console.log("antes");
     if (
       localStorage.getItem("token") &&
       localStorage.getItem("mail") &&
